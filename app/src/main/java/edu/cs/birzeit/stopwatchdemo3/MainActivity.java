@@ -2,8 +2,11 @@ package edu.cs.birzeit.stopwatchdemo3;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
+
 public class MainActivity extends AppCompatActivity {
     private int seconds = 0;
     private boolean running = false;
@@ -12,22 +15,31 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-        checkInstance(savedInstanceState);
-
-        runTimer();
-    }
-
-    private void checkInstance(Bundle savedInstanceState) {
         if(savedInstanceState != null){
             seconds = savedInstanceState.getInt("SECONDS");
             running = savedInstanceState.getBoolean("RUNNING");
         }
+
+        runTimer();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d("ChangeState","Method onPause called");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.d("ChangeState","Method onStop called");
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState){
         super.onSaveInstanceState(outState);
+        Toast.makeText(this, "changed", Toast.LENGTH_SHORT).show();
+        Log.d("ChangeState","Method onSaveInstanceState called");
         outState.putInt("SECONDS", seconds);
         outState.putBoolean("RUNNING", running);
 
